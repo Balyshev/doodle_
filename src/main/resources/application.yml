@@ -1,13 +1,9 @@
 spring:
   datasource:
-    url: jdbc:postgresql://postgres:5432/doodle
+    url: jdbc:postgresql://localhost:5432/doodle
     username: doodle
     password: doodle
-
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
-
-server:
-  port: 8080

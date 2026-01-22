@@ -1,15 +1,29 @@
 package com.example.doodle.calendar;
 
-import com.example.doodle.user.User;
-import jakarta.persistence.*;
+import java.time.Instant;
+import java.util.List;
 
-@Entity
 public class Calendar {
 
-    @Id
-    @GeneratedValue
-    private Long id;
+    private final List<TimeSlot> slots;
 
-    @OneToOne
-    private User owner;
+    public Calendar(List<TimeSlot> slots) {
+        this.slots = slots;
+    }
+
+    public List<TimeSlot> free(Instant from, Instant to) {
+        return slots.stream()
+                .filter(s -> s.getStatus() == SlotStatus.FREE)
+                .filter(s -> !s.getStartTime().isAfter(to))
+                .filter(s -> !s.getEndTime().isBefore(from))
+                .toList();
+    }
+
+    public List<TimeSlot> busy(Instant from, Instant to) {
+        return slots.stream()
+                .filter(s -> s.getStatus() != SlotStatus.FREE)
+                .filter(s -> !s.getStartTime().isAfter(to))
+                .filter(s -> !s.getEndTime().isBefore(from))
+                .toList();
+    }
 }
